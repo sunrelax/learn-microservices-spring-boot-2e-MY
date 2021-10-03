@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +29,4 @@ public class ChallengeAttemptDTO {
 	@Positive(message = "How could you possibly get a negative result here? Try again.")
 	int guess;
 
-	@JsonPOJOBuilder(withPrefix = "")
-	public static final class ChallengeAttemptDTOBuilder {
-	}
 }

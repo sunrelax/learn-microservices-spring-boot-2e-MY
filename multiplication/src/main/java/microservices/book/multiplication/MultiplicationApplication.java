@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 @SpringBootApplication
 public class MultiplicationApplication {
@@ -17,7 +16,7 @@ public class MultiplicationApplication {
 	@Bean
 	public ObjectMapper objectMapper() {
 		var om = new ObjectMapper();
-		//om.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		// om.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		return om;
 	}
 }
