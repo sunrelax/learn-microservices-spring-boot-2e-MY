@@ -1,12 +1,8 @@
 package microservices.book.multiplication.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
 /**
  * Stores information to identify the user.
@@ -17,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	private String alias;
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String alias;
 
-	public User(final String userAlias) {
-		this(null, userAlias);
-	}
+    public User(final String userAlias) {
+        this(null, userAlias);
+    }
 }
