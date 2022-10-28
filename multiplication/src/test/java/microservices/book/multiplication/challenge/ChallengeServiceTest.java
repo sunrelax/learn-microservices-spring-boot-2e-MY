@@ -1,23 +1,21 @@
 package microservices.book.multiplication.challenge;
 
-import microservices.book.multiplication.serviceclients.GamificationServiceClient;
-import microservices.book.multiplication.user.User;
-import microservices.book.multiplication.user.UserRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
+import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.UserRepository;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.AdditionalAnswers.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ChallengeServiceTest {
@@ -29,14 +27,14 @@ public class ChallengeServiceTest {
     @Mock
     private ChallengeAttemptRepository attemptRepository;
     @Mock
-    private GamificationServiceClient gameClient;
+    private ChallengeEventPub eventPub;
 
     @BeforeEach
     public void setUp() {
         challengeService = new ChallengeServiceImpl(
                 userRepository,
                 attemptRepository,
-                gameClient
+                eventPub
         );
     }
 
@@ -56,7 +54,7 @@ public class ChallengeServiceTest {
         then(resultAttempt.isCorrect()).isTrue();
         verify(userRepository).save(new User("john_doe"));
         verify(attemptRepository).save(resultAttempt);
-        verify(gameClient).sendAttempt(resultAttempt);
+        verify(eventPub).challengeSolved(resultAttempt);
     }
 
     @Test
@@ -75,7 +73,7 @@ public class ChallengeServiceTest {
         then(resultAttempt.isCorrect()).isFalse();
         verify(userRepository).save(new User("john_doe"));
         verify(attemptRepository).save(resultAttempt);
-        verify(gameClient).sendAttempt(resultAttempt);
+        verify(eventPub).challengeSolved(resultAttempt);
     }
 
     @Test
@@ -98,7 +96,7 @@ public class ChallengeServiceTest {
         then(resultAttempt.getUser()).isEqualTo(existingUser);
         verify(userRepository, never()).save(any());
         verify(attemptRepository).save(resultAttempt);
-        verify(gameClient).sendAttempt(resultAttempt);
+        verify(eventPub).challengeSolved(resultAttempt);
     }
 
     @Test
