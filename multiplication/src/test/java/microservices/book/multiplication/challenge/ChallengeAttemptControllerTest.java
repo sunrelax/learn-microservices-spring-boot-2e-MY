@@ -1,6 +1,6 @@
 package microservices.book.multiplication.challenge;
 
-import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.Users;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.eq;
@@ -43,8 +44,8 @@ class ChallengeAttemptControllerTest {
     @Test
     void postValidResult() throws Exception {
         // given
-        User user = new User(1L, "john");
-        long attemptId = 5L;
+        Users user = new Users(UUID.randomUUID().toString(), "john");
+        String attemptId = UUID.randomUUID().toString();
         ChallengeAttemptDTO attemptDTO = new ChallengeAttemptDTO(50, 70, "john", 3500);
         ChallengeAttempt expectedResponse = new ChallengeAttempt(attemptId, user, 50, 70, 3500, true);
         given(challengeService
@@ -83,9 +84,9 @@ class ChallengeAttemptControllerTest {
     @Test
     public void getUserStats() throws Exception {
         // given
-        User user = new User("john_doe");
-        ChallengeAttempt attempt1 = new ChallengeAttempt(1L, user, 50, 70, 3500, true);
-        ChallengeAttempt attempt2 = new ChallengeAttempt(2L, user, 20, 10, 210, false);
+        Users user = new Users("john_doe");
+        ChallengeAttempt attempt1 = new ChallengeAttempt(UUID.randomUUID().toString(), user, 50, 70, 3500, true);
+        ChallengeAttempt attempt2 = new ChallengeAttempt(UUID.randomUUID().toString(), user, 20, 10, 210, false);
         List<ChallengeAttempt> recentAttempts = List.of(attempt1, attempt2);
         given(challengeService
                 .getStatsForUser("john_doe"))

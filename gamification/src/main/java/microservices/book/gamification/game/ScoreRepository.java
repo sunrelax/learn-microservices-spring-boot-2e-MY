@@ -23,7 +23,7 @@ public interface ScoreRepository extends CrudRepository<ScoreCard, Long> {
      * @return the total score for the user, empty if the user doesn't exist
      */
     @Query("SELECT SUM(s.score) FROM ScoreCard s WHERE s.userId = :userId GROUP BY s.userId")
-    Optional<Integer> getTotalScoreForUser(@Param("userId") Long userId);
+    Optional<Integer> getTotalScoreForUser(@Param("userId") String userId);
 
     /**
      * Retrieves a list of {@link LeaderBoardRow}s representing the Leader Board
@@ -43,6 +43,6 @@ public interface ScoreRepository extends CrudRepository<ScoreCard, Long> {
      * @return a list containing all the ScoreCards for the given user,
      * sorted by most recent.
      */
-    List<ScoreCard> findByUserIdOrderByScoreTimestampDesc(final Long userId);
+    List<ScoreCard> findByUserIdOrderByScoreTimestampDesc(final String userId);
 
 }

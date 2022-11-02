@@ -11,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 public class LeaderBoardRow {
 
-    Long userId;
+    String userId;
     Long totalScore;
     @With
     List<String> badges;
 
-    public LeaderBoardRow(final Long userId, final Long totalScore) {
+    public LeaderBoardRow(final String userId, final Long totalScore) {
         this.userId = userId;
         this.totalScore = totalScore;
         this.badges = List.of();

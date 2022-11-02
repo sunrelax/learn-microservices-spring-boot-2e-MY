@@ -9,10 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.core.AmqpTemplate;
 
-import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.Users;
 
 import static org.assertj.core.api.BDDAssertions.*;
 import static org.mockito.Mockito.*;
+
+import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 class ChallengeEventPubTest {
@@ -51,12 +53,12 @@ class ChallengeEventPubTest {
     }
 
     private ChallengeAttempt createTestAttempt(boolean correct) {
-        return new ChallengeAttempt(1L, new User(10L, "john"), 30, 40,
+        return new ChallengeAttempt(UUID.randomUUID().toString(), new Users(UUID.randomUUID().toString(), "john"), 30, 40,
                 correct ? 1200 : 1300, correct);
     }
 
     private ChallengeSolvedEvent solvedEvent(boolean correct) {
-        return new ChallengeSolvedEvent(1L, correct, 30, 40, 10L, "john");
+        return new ChallengeSolvedEvent(UUID.randomUUID().toString(), correct, 30, 40, UUID.randomUUID().toString(), "john");
     }
 
 }

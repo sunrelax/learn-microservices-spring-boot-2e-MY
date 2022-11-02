@@ -1,6 +1,7 @@
 package microservices.book.multiplication.challenge;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +15,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.Users;
 import microservices.book.multiplication.user.UserController;
 import microservices.book.multiplication.user.UserRepository;
 
@@ -33,13 +34,13 @@ public class UserControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<List<User>> jsonRequestUser;
+    private JacksonTester<List<Users>> jsonRequestUser;
 
     @Test
     public void getUserIds() throws Exception {
         // given
-        User user1 = new User(1L, "jane");
-        User user2 = new User(2L, "john");
+        Users user1 = new Users(UUID.randomUUID().toString(), "jane");
+        Users user2 = new Users(UUID.randomUUID().toString(), "john");
         given(userRepository.findAllByIdIn(List.of(1L, 2L)))
                 .willReturn(List.of(user1, user2));
 

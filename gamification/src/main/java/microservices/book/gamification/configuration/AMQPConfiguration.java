@@ -1,6 +1,8 @@
 package microservices.book.gamification.configuration;
 
 
+import java.time.Duration;
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.ExchangeBuilder;
@@ -31,7 +33,7 @@ public class AMQPConfiguration {
     @Bean
     public Queue gamificationQueue(
             @Value("${amqp.queue.gamification}") final String queueName) {
-        return QueueBuilder.durable(queueName).build();
+        return QueueBuilder.durable(queueName).ttl((int) Duration.ofHours(6).toMillis()).maxLength(25000).build();
     }
 
     @Bean

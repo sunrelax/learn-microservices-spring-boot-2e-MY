@@ -2,6 +2,7 @@ package microservices.book.multiplication.challenge;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.Users;
 import microservices.book.multiplication.user.UserRepository;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -52,7 +53,7 @@ public class ChallengeServiceTest {
 
         // then
         then(resultAttempt.isCorrect()).isTrue();
-        verify(userRepository).save(new User("john_doe"));
+        verify(userRepository).save(new Users("john_doe"));
         verify(attemptRepository).save(resultAttempt);
         verify(eventPub).challengeSolved(resultAttempt);
     }
@@ -71,7 +72,7 @@ public class ChallengeServiceTest {
 
         // then
         then(resultAttempt.isCorrect()).isFalse();
-        verify(userRepository).save(new User("john_doe"));
+        verify(userRepository).save(new Users("john_doe"));
         verify(attemptRepository).save(resultAttempt);
         verify(eventPub).challengeSolved(resultAttempt);
     }
@@ -81,7 +82,7 @@ public class ChallengeServiceTest {
         // given
         given(attemptRepository.save(any()))
                 .will(returnsFirstArg());
-        User existingUser = new User(1L, "john_doe");
+        Users existingUser = new Users(UUID.randomUUID().toString(), "john_doe");
         given(userRepository.findByAlias("john_doe"))
                 .willReturn(Optional.of(existingUser));
         ChallengeAttemptDTO attemptDTO =
@@ -102,9 +103,9 @@ public class ChallengeServiceTest {
     @Test
     public void retrieveStatsTest() {
         // given
-        User user = new User("john_doe");
-        ChallengeAttempt attempt1 = new ChallengeAttempt(1L, user, 50, 60, 3010, false);
-        ChallengeAttempt attempt2 = new ChallengeAttempt(2L, user, 50, 60, 3051, false);
+        Users user = new Users("john_doe");
+        ChallengeAttempt attempt1 = new ChallengeAttempt(UUID.randomUUID().toString(), user, 50, 60, 3010, false);
+        ChallengeAttempt attempt2 = new ChallengeAttempt(UUID.randomUUID().toString(), user, 50, 60, 3051, false);
         List<ChallengeAttempt> lastAttempts = List.of(attempt1, attempt2);
         given(attemptRepository.findTop10ByUserAliasOrderByIdDesc("john_doe"))
                 .willReturn(lastAttempts);

@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<Users, Long> {
 
-    Optional<User> findByAlias(final String alias);
+    Optional<Users> findByAlias(final String alias);
 
-    List<User> findAllByIdIn(final List<Long> ids);
+    List<Users> findAllByIdIn(final List<Long> ids);
 
 }

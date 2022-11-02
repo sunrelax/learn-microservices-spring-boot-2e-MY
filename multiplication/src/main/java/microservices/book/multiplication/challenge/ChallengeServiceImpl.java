@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import microservices.book.multiplication.user.User;
+import microservices.book.multiplication.user.Users;
 import microservices.book.multiplication.user.UserRepository;
 
 @Slf4j
@@ -25,12 +25,12 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
         // Check if the user already exists for that alias, otherwise create it
-        User user = userRepository.findByAlias(attemptDTO.getUserAlias())
+        Users user = userRepository.findByAlias(attemptDTO.getUserAlias())
                 .orElseGet(() -> {
                     log.info("Creating new user with alias {}",
                             attemptDTO.getUserAlias());
                     return userRepository.save(
-                            new User(attemptDTO.getUserAlias())
+                            new Users(attemptDTO.getUserAlias())
                     );
                 });
 
