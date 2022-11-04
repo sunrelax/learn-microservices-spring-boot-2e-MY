@@ -38,7 +38,7 @@ class ChallengesApiClient {
             ChallengesApiClient.GET_ATTEMPTS_BY_ALIAS + userAlias);
     }
 
-    static getUsers(userIds: number[]): Promise<Response> {
+    static getUsers(userIds: string[]): Promise<Response> {
         return fetch(ChallengesApiClient.SERVER_URL +
             ChallengesApiClient.GET_USERS_BY_IDS +
             '/' + userIds.join(','));

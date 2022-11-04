@@ -30,7 +30,7 @@ class LeaderBoardComponent extends React.Component {
         );
     }
 
-    getUserAliasData(userIds: number[]): Promise {
+    getUserAliasData(userIds: string[]): Promise {
         return ChallengesApiClient.getUsers(userIds).then(
             usRes => {
                 if(usRes.ok) {

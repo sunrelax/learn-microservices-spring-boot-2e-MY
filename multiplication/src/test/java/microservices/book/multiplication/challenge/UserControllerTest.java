@@ -41,7 +41,7 @@ public class UserControllerTest {
         // given
         Users user1 = new Users(UUID.randomUUID().toString(), "jane");
         Users user2 = new Users(UUID.randomUUID().toString(), "john");
-        given(userRepository.findAllByIdIn(List.of(1L, 2L)))
+        given(userRepository.findAllByIdIn(List.of("cbdc41a9-4955-4d87-9e0c-9e448008e5fd", "5fb740df-5221-405d-8afb-e99d8dc4b712")))
                 .willReturn(List.of(user1, user2));
 
         // when

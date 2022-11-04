@@ -16,7 +16,7 @@ public class UserController {
     private final UserRepository userRepository;
 
     @GetMapping("/{idList}")
-    public List<Users> getUsersByIdList(@PathVariable final List<Long> idList) {
+    public List<Users> getUsersByIdList(@PathVariable final List<String> idList) {
         return userRepository.findAllByIdIn(idList);
     }
 }

@@ -11,7 +11,7 @@ class ChallengeComponent extends React.Component {
             a: '', b: '',
             user: '',
             message: '',
-            guess: 0,
+            guess: null,
             lastAttempts: []
         };
         this.handleSubmitResult = this.handleSubmitResult.bind(this);
@@ -102,16 +102,21 @@ class ChallengeComponent extends React.Component {
                 </div>
                 <form onSubmit={this.handleSubmitResult}>
                     <label>
-                        Your alias:
-                        <input type="text" maxLength="12"
+                        Your alias *:&nbsp;&nbsp;&nbsp;
+                        <input type="text" 
+                               required="required" pattern="[A-Za-z0-9]{1,12}"
+                               maxLength="12"
                                name="user"
                                value={this.state.user}
                                onChange={this.handleChange}/>
                     </label>
                     <br/>
                     <label>
-                        Your guess:
-                        <input type="number" min="0"
+                        Your guess *:&nbsp;
+                        <input type="number" 
+                               required="required"
+                               placeholder=""
+                               min="1"
                                name="guess"
                                value={this.state.guess}
                                onChange={this.handleChange}/>

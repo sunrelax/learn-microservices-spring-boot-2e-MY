@@ -9,6 +9,6 @@ public interface UserRepository extends CrudRepository<Users, Long> {
 
     Optional<Users> findByAlias(final String alias);
 
-    List<Users> findAllByIdIn(final List<Long> ids);
+    List<Users> findAllByIdIn(final List<String> ids);
 
 }
