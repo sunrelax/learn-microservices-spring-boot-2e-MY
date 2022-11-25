@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2"
 
 services:
   
@@ -6,25 +6,42 @@ services:
     image: challenges-frontend:1.0
     ports:
       - 3000:80
+
+  dbpg:
+    image: postgres:11.18-bullseye
+    container_name: dbpg
+    environment:
+      - POSTGRES_PASSWORD=mssb
+      - POSTGRES_USER=mssb
+      - POSTGRES_DB=mssb
+    networks:
+      - microservices
+    #expose:
+     # - 5433
+    ports:
+      - 5432:5432
+    volumes: 
+      - dbpg-data:/var/lib/postgresql/data
   
   multiplication:
     image: multiplication:0.0.1-SNAPSHOT
-    container_name: multiplication
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul-dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5433/mssb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5432/mssb
       - SPRING_DATASOURCE_USER=mssb
       - SPRING_DATASOURCE_PASSWORD=mssb
       - SPRING_RABBITMQ_HOST=rabbitmq-dev
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - dbpg:
-          condition=service_completed_successfully
+      - dbpg
+          #condition: service_completed_successfully
       - rabbitmq-dev
       - consul-importer
     networks:
       - microservices
+    links:
+      - dbpg:dbpg
   
   gamification:
     image: gamification:0.0.1-SNAPSHOT
@@ -32,7 +49,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul-dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5433/mssb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5432/mssb
       - SPRING_DATASOURCE_USER=mssb
       - SPRING_DATASOURCE_PASSWORD=mssb
       - SPRING_RABBITMQ_HOST=rabbitmq-dev
@@ -104,24 +121,12 @@ services:
     networks:
       - microservices
   
-  dbpg:
-    image: postgres:11.18-bullseye
-    container_name: dbpg
-    environment:
-      - POSTGRES_PASSWORD=mssb
-      - POSTGRES_USER=mssb
-      - POSTGRES_DB=mssb
-    #expose:
-    #  - 5433
-    ports:
-      - 5433:5432
-    volumes: 
-      - dbpg-data:/var/lib/postgresql/data
+  
       
 volumes:
   dbpg-data:
 
 networks:
   microservices:
-    driver: overlay
-    name: host
+    #driver: overlay
+    #name: host
