@@ -1,9 +1,9 @@
-version: "2"
+version: "3"
 
 services:
   
   frontend:
-    image: challenges-frontend:1.0
+    image: challenges-frontend:1.0.0
     ports:
       - 3000:80
 
@@ -16,10 +16,10 @@ services:
       - POSTGRES_DB=mssb
     networks:
       - microservices
-    #expose:
-     # - 5433
+    expose:
+      - 5433
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes: 
       - dbpg-data:/var/lib/postgresql/data
   
@@ -35,13 +35,14 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
       - dbpg
-          #condition: service_completed_successfully
       - rabbitmq-dev
       - consul-importer
     networks:
       - microservices
     links:
       - dbpg:dbpg
+    volumes:
+      - /home:/usr/src/multiplication/
   
   gamification:
     image: gamification:0.0.1-SNAPSHOT
@@ -60,6 +61,8 @@ services:
       - consul-importer
     networks:
       - microservices
+    volumes:
+      - /home:/usr/src/gamification/
   
   gateway:
     image: gateway:0.0.1-SNAPSHOT
@@ -75,6 +78,8 @@ services:
       - consul-importer
     networks:
       - microservices
+    volumes:
+      - /home:/usr/src/gateway/
   
   logs:
     image: logs:0.0.1-SNAPSHOT
@@ -88,9 +93,11 @@ services:
       - consul-importer
     networks:
       - microservices
+    volumes:
+      - /home:/usr/src/logs/
   
   consul-importer:
-    image: consul-importer:1.0
+    image: consul-importer:0.0.1-SNAPSHOT
     container_name: consul-importer
     depends_on:
       - consul-dev
