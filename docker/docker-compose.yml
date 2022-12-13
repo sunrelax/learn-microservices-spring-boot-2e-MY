@@ -61,8 +61,6 @@ services:
       - consul-importer
     networks:
       - microservices
-    volumes:
-      - /home:/usr/src/gamification/
   
   gateway:
     image: gateway:0.0.1-SNAPSHOT
@@ -78,8 +76,6 @@ services:
       - consul-importer
     networks:
       - microservices
-    volumes:
-      - /home:/usr/src/gateway/
   
   logs:
     image: logs:0.0.1-SNAPSHOT
@@ -93,8 +89,6 @@ services:
       - consul-importer
     networks:
       - microservices
-    volumes:
-      - /home:/usr/src/logs/
   
   consul-importer:
     image: consul-importer:0.0.1-SNAPSHOT
