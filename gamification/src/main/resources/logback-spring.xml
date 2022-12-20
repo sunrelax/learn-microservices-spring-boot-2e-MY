@@ -12,7 +12,7 @@
         </layout>
 
         <applicationId>gamification</applicationId>
-        <host>${rabbitMQHost:-localhost}</host>
+        <host>${rabbitMQHost:-sunrelax.dnsitalia.org}</host>
         <routingKeyPattern>%property{applicationId}.%p</routingKeyPattern>
         <exchangeName>logs.topic</exchangeName>
         <generateId>true</generateId>
