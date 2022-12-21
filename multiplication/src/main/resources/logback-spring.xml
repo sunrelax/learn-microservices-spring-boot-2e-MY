@@ -12,7 +12,7 @@
         </layout>
 
         <applicationId>multiplication</applicationId>
-        <host>${rabbitMQHost:-sunrelax.dnsitalia.org}</host>
+        <host>${rabbitMQHost:-localhost}</host>
         <routingKeyPattern>%property{applicationId}.%p</routingKeyPattern>
         <exchangeName>logs.topic</exchangeName>
         <generateId>true</generateId>

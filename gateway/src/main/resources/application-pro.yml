@@ -27,7 +27,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://sunrelax.dnsitalia.org"
+            allowedOrigins: "http://localhost"
             allowedHeaders:
               - "*"
             allowedMethods:

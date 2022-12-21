@@ -4,13 +4,11 @@ services:
   
   frontend:
     image: challenges-frontend:1.0.0
-    platform: linux/amd64
     ports:
       - 3000:80
 
   dbpg:
     image: postgres:11.18-bullseye
-    platform: linux/amd64
     container_name: dbpg
     environment:
       - POSTGRES_PASSWORD=mssb
@@ -27,7 +25,6 @@ services:
   
   multiplication:
     image: multiplication:0.0.1-SNAPSHOT
-    platform: linux/amd64
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul-dev
@@ -44,12 +41,9 @@ services:
       - microservices
     links:
       - dbpg:dbpg
-    volumes:
-      - /home:/usr/src/multiplication/
   
   gamification:
     image: gamification:0.0.1-SNAPSHOT
-    platform: linux/amd64
     container_name: gamification
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -68,7 +62,6 @@ services:
   
   gateway:
     image: gateway:0.0.1-SNAPSHOT
-    platform: linux/amd64
     container_name: gateway
     ports:
       - 8000:8000
@@ -84,7 +77,6 @@ services:
   
   logs:
     image: logs:0.0.1-SNAPSHOT
-    platform: linux/amd64
     container_name: logs
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -98,7 +90,6 @@ services:
   
   consul-importer:
     image: consul-importer:0.0.1-SNAPSHOT
-    platform: linux/amd64
     container_name: consul-importer
     depends_on:
       - consul-dev
@@ -107,7 +98,6 @@ services:
   
   consul-dev:
     image: consul
-    platform: linux/amd64
     container_name: consul
     ports:
       - 8500:8500
@@ -118,10 +108,9 @@ services:
   
   rabbitmq-dev:
     image: rabbitmq:3-management
-    platform: linux/amd64
     container_name: rabbitmq
     healthcheck:
-      test: [ "CMD", "nc", "-z", "sunrelax.dnsitalia.org", "5672" ]
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
       interval: 5s
       timeout: 15s
       retries: 1
@@ -130,8 +119,6 @@ services:
       - 15672:15672
     networks:
       - microservices
-  
-  
       
 volumes:
   dbpg-data:
