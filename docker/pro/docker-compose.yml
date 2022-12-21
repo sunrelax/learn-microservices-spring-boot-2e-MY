@@ -1,0 +1,140 @@
+version: "3"
+
+services:
+  
+  frontend:
+    image: sunrelax/challenges-frontend:1.0.0
+    platform: linux/arm64
+    ports:
+      - 3000:80
+
+  dbpg:
+    image: postgres:11.18-bullseye
+    platform: linux/arm64
+    container_name: dbpg
+    environment:
+      - POSTGRES_PASSWORD=mssb
+      - POSTGRES_USER=mssb
+      - POSTGRES_DB=mssb
+    networks:
+      - microservices
+    expose:
+      - 5433
+    ports:
+      - 5433:5432
+    volumes: 
+      - dbpg-data:/var/lib/postgresql/data
+  
+  multiplication:
+    image: sunrelax/multiplication:0.0.1-SNAPSHOT
+    platform: linux/arm64
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul-dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5432/mssb
+      - SPRING_DATASOURCE_USER=mssb
+      - SPRING_DATASOURCE_PASSWORD=mssb
+      - SPRING_RABBITMQ_HOST=rabbitmq-dev
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - dbpg
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+    links:
+      - dbpg:dbpg
+    volumes:
+      - /home:/usr/src/multiplication/
+  
+  gamification:
+    image: sunrelax/gamification:0.0.1-SNAPSHOT
+    platform: linux/arm64
+    container_name: gamification
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul-dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpg:5432/mssb
+      - SPRING_DATASOURCE_USER=mssb
+      - SPRING_DATASOURCE_PASSWORD=mssb
+      - SPRING_RABBITMQ_HOST=rabbitmq-dev
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - dbpg
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+  
+  gateway:
+    image: sunrelax/gateway:0.0.1-SNAPSHOT
+    platform: linux/arm64
+    container_name: gateway
+    ports:
+      - 8000:8000
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul-dev
+      - SPRING_RABBITMQ_HOST=rabbitmq-dev
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+  
+  logs:
+    image: sunrelax/logs:0.0.1-SNAPSHOT
+    platform: linux/arm64
+    container_name: logs
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul-dev
+      - SPRING_RABBITMQ_HOST=rabbitmq-dev
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+  
+  consul-importer:
+    image: sunrelax/consul-importer:0.0.1-SNAPSHOT
+    platform: linux/arm64
+    container_name: consul-importer
+    depends_on:
+      - consul-dev
+    networks:
+      - microservices
+  
+  consul-dev:
+    image: consul
+    platform: linux/arm64
+    container_name: consul
+    ports:
+      - 8500:8500
+      - 8600:8600/udp
+    command: agent -dev -node=learnmicro -client=0.0.0.0 -log-level=INFO
+    networks:
+      - microservices
+  
+  rabbitmq-dev:
+    image: rabbitmq:3-management
+    platform: linux/arm64
+    container_name: rabbitmq
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "fehost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - microservices
+  
+  
+      
+volumes:
+  dbpg-data:
+
+networks:
+  microservices:

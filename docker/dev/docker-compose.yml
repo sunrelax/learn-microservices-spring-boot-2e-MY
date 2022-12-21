@@ -3,12 +3,14 @@ version: "3"
 services:
   
   frontend:
-    image: sunrelax/challenges-frontend:1.0.0
+    image: challenges-frontend:1.0.0
+    platform: linux/amd64
     ports:
       - 3000:80
 
   dbpg:
     image: postgres:11.18-bullseye
+    platform: linux/amd64
     container_name: dbpg
     environment:
       - POSTGRES_PASSWORD=mssb
@@ -24,7 +26,8 @@ services:
       - dbpg-data:/var/lib/postgresql/data
   
   multiplication:
-    image: sunrelax/multiplication:0.0.1-SNAPSHOT
+    image: multiplication:0.0.1-SNAPSHOT
+    platform: linux/amd64
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul-dev
@@ -45,7 +48,8 @@ services:
       - /home:/usr/src/multiplication/
   
   gamification:
-    image: sunrelax/gamification:0.0.1-SNAPSHOT
+    image: gamification:0.0.1-SNAPSHOT
+    platform: linux/amd64
     container_name: gamification
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -63,7 +67,8 @@ services:
       - microservices
   
   gateway:
-    image: sunrelax/gateway:0.0.1-SNAPSHOT
+    image: gateway:0.0.1-SNAPSHOT
+    platform: linux/amd64
     container_name: gateway
     ports:
       - 8000:8000
@@ -78,7 +83,8 @@ services:
       - microservices
   
   logs:
-    image: sunrelax/logs:0.0.1-SNAPSHOT
+    image: logs:0.0.1-SNAPSHOT
+    platform: linux/amd64
     container_name: logs
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -91,7 +97,8 @@ services:
       - microservices
   
   consul-importer:
-    image: sunrelax/consul-importer:0.0.1-SNAPSHOT
+    image: consul-importer:0.0.1-SNAPSHOT
+    platform: linux/amd64
     container_name: consul-importer
     depends_on:
       - consul-dev
@@ -100,6 +107,7 @@ services:
   
   consul-dev:
     image: consul
+    platform: linux/amd64
     container_name: consul
     ports:
       - 8500:8500
@@ -110,6 +118,7 @@ services:
   
   rabbitmq-dev:
     image: rabbitmq:3-management
+    platform: linux/amd64
     container_name: rabbitmq
     healthcheck:
       test: [ "CMD", "nc", "-z", "sunrelax.dnsitalia.org", "5672" ]

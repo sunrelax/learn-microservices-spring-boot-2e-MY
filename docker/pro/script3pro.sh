@@ -1,5 +1,6 @@
 #!/bin/bash
 # Questo è un commento
+export spring_profiles_active=pro
 echo Compilazione e build frontend # Anche questo è un commento!
 cd /home/giuseppe/Documents/java/workspace/git/learn-microservices-spring-boot-2e-my/challenges-frontend/
 export NODE_OPTIONS=--openssl-legacy-provider
