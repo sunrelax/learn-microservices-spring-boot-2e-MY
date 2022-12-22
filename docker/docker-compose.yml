@@ -112,7 +112,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      test: [ "CMD", "nc", "-z", "192.168.1.8", "5672" ]
       interval: 5s
       timeout: 15s
       retries: 1

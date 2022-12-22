@@ -12,7 +12,7 @@
         </layout>
 
         <applicationId>gamification</applicationId>
-        <host>${rabbitMQHost:-localhost}</host>
+        <host>${rabbitMQHost:-192.168.1.8}</host>
         <routingKeyPattern>%property{applicationId}.%p</routingKeyPattern>
         <exchangeName>logs.topic</exchangeName>
         <generateId>true</generateId>

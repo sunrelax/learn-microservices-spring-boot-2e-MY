@@ -1,6 +1,6 @@
 class ChallengesApiClient {
 
-    static SERVER_URL = 'http://localhost:8000';
+    static SERVER_URL = 'http://192.168.1.8:8000';
     static GET_CHALLENGE = '/challenges/random';
     static POST_RESULT = '/attempts';
     static GET_ATTEMPTS_BY_ALIAS = '/attempts?alias=';
